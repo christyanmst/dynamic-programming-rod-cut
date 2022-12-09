@@ -62,6 +62,7 @@ export default function Home() {
         Math.floor(Math.random() * (30 - 1) + 1)
       );
     }
+    valVetor.sort(compararNumeros);
     return valVetor; //retorna um vetor de tamanho N com N números aleatórios
   }
 
