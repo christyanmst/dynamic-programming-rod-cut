@@ -37,23 +37,7 @@ export default function Home() {
 
 //
 
-  const dataRodCut = {
-    labels: tamanhoVetor,
-    datasets: [
-      {
-        label: "Rod-Cut recursivo com memoização",
-        data: tempoRodCutMemoization,
-        borderColor: "#565969",
-        backgroundColor: "#565969",
-      },
-      {
-        label: "Rod-Cut iterativo",
-        data: tempoRodCutIterative,
-        borderColor: "#5E6BB5",
-        backgroundColor: "#5E6BB5",
-      },
-    ],
-  };
+  
   // função que recebe um valor N que é uma posição do array de tamanhos e retorna um array de valores
   function GerarValores(tamVetor) {
     let valVetor = [];
@@ -110,6 +94,24 @@ export default function Home() {
     setTamanhoVetor(tamVetor); // Inserindo o tamanho do Vetor
   }
 
+  const dataRodCut = {
+    labels: tamanhoVetor,
+    datasets: [
+      {
+        label: "Rod-Cut recursivo com memoização",
+        data: tempoRodCutMemoization,
+        borderColor: "#565969",
+        backgroundColor: "#565969",
+      },
+      {
+        label: "Rod-Cut iterativo",
+        data: tempoRodCutIterative,
+        borderColor: "#5E6BB5",
+        backgroundColor: "#5E6BB5",
+      },
+    ],
+  };
+  
   return (
     <>
       <div style={{ alignItems: "center" }}>
