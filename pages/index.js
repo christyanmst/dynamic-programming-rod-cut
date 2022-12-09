@@ -26,64 +26,16 @@ export default function Home() {
   const [tempoRodCutMemoization, setTempoRodCutMemoization] = useState([]);
   const [tempoRodCutIterative, setTempoRodCutIterative] = useState([]);
   const [tamanhoVetor, setTamanhoVetor] = useState([]);
-  const [valorM, setValorM] = useState(0);
 
   function compararNumeros(a, b) {
     return a - b;
   }
   
 //trocar pelas funções
-  function insertionSort(array) {
-    for (let i = 1; i < array.length; i++) {
-      let j = i - 1;
-      let temp = array[i];
-      while (j >= 0 && array[j] > temp) {
-        array[j + 1] = array[j];
-        j--;
-      }
-      array[j + 1] = temp;
-    }
-  }
 
-  function mergeSortRecursivo(array) {
-    if (array.length <= 1) {
-      return array;
-    }
+//rod cut aqui
 
-    const meio = Math.floor(array.length / 2);
-    const esqArr = array.slice(0, meio);
-    const dirArr = array.slice(meio);
-
-    return mergeDoisArrays(
-      mergeSortRecursivo(esqArr),
-      mergeSortRecursivo(dirArr)
-    );
-  }
-
-  function mergeDoisArrays(esqArr, dirArr) {
-    let resArr = [],
-      esqIndex = 0,
-      dirIndex = 0;
-
-    while (esqIndex < esqArr.length && dirIndex < dirArr.length) {
-      if (esqArr[esqIndex] < dirArr[dirIndex]) {
-        resArr.push(esqArr[esqIndex]);
-        esqIndex++;
-      } else {
-        resArr.push(dirArr[dirIndex]);
-        dirIndex++;
-      }
-    }
-
-    if (esqArr[esqIndex]) {
-      var elementos = esqArr.slice(esqIndex);
-      resArr.push(...elementos);
-    } else {
-      var elementos = dirArr.slice(dirIndex);
-      resArr.push(...elementos);
-    }
-    return resArr;
-  }
+//
 
   const dataRodCut = {
     labels: tamanhoVetor,
@@ -107,11 +59,7 @@ export default function Home() {
     let valVetor = [];
     for (let j = 0; j < tamVetor; j++) {
       valVetor.push(
-        parseFloat(
-          (
-            Math.random() * ((tamVetor *2) - (tamVetor * -2)) + (tamVetor * -2)
-          ).toFixed(2)
-        )
+        Math.floor(Math.random() * (30 - 1) + 1)
       );
     }
     return valVetor; //retorna um vetor de tamanho N com N números aleatórios
@@ -119,7 +67,6 @@ export default function Home() {
 
   function sortTime() {
     let tamVetor = [];
-    let mArrays = []; 
     let arrayGeral = [];
     let tempRodCutIterative = []
     let tempRodCutMemoization = []
@@ -127,40 +74,38 @@ export default function Home() {
     let final;
 
     for (let i = 0; i < 10; i++) {
-      tamVetor.push(Math.floor(Math.random() * (10000 - 10) + 10)); // gerando valores entre 10000 e 10
+      tamVetor.push(Math.floor(Math.random() * (15 - 5) + 5)); // gerando valores entre 5 e 15, tamanho de vetores
     }
     tamVetor.sort(compararNumeros); // ordenando array de tamanhos
 
-    setValorM(Math.floor(Math.random() * (20 - 10) + 10)); //escolhendo um M aleatório entre 10 e 20
-
     for (let i = 0; i < tamVetor.length; i++) {
-      for (let j = 0; j < valorM; j++) { // inserindo no vetor mArrays um array de N valores, ou seja M vetores de n valores
-        mArrays.push(GerarValores(tamVetor[i]));
-      }
-      arrayGeral.push(mArrays); // inserindo num array geral, separando por tamanhos, vou ter 10 entradas com m entradas em cada, esse array separa elas
-      mArrays = [];
+      arrayGeral.push(GerarValores(tamVetor[i])) // gerando valores pro tamanho especifico do array de tamanhos
     }
+
+
+    console.log(tamVetor)
+    console.log(arrayGeral)
     
-    for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
-      inicio = performance.now();
-      for (let j = 0; j < valorM; j++) {
-        insertionSort(arrayGeral[i][j])
-      }
-      final = performance.now();
-      tempRodCutMemoization.push(final-inicio)
-    }
+  //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
+  //     inicio = performance.now();
+  //     for (let j = 0; j < valorM; j++) {
+  //       insertionSort(arrayGeral[i][j])
+  //     }
+  //     final = performance.now();
+  //     tempRodCutMemoization.push(final-inicio)
+  //   }
 
-    for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
-      inicio = performance.now();
-      for (let j = 0; j < valorM; j++) {
-        mergeSortRecursivo(arrayGeral[i][j])
-      }
-      final = performance.now();
-      tempRodCutIterative.push(final-inicio)
-    }
+  //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
+  //     inicio = performance.now();
+  //     for (let j = 0; j < valorM; j++) {
+  //       mergeSortRecursivo(arrayGeral[i][j])
+  //     }
+  //     final = performance.now();
+  //     tempRodCutIterative.push(final-inicio)
+  //   }
 
-    setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
-    setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Merge SORT
+  //   setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
+  //   setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Merge SORT
     setTamanhoVetor(tamVetor); // Inserindo o tamanho do Vetor
   }
 
