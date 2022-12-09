@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -23,15 +23,16 @@ ChartJS.register(
 );
 
 export default function Home() {
-  const [tempoInsertion, setTempoInsertion] = useState([]);
-  const [tempoMerge, setTempoMerge] = useState([]);
+  const [tempoRodCutMemoization, setTempoRodCutMemoization] = useState([]);
+  const [tempoRodCutIterative, setTempoRodCutIterative] = useState([]);
   const [tamanhoVetor, setTamanhoVetor] = useState([]);
   const [valorM, setValorM] = useState(0);
 
   function compararNumeros(a, b) {
     return a - b;
   }
-
+  
+//trocar pelas funções
   function insertionSort(array) {
     for (let i = 1; i < array.length; i++) {
       let j = i - 1;
@@ -84,18 +85,18 @@ export default function Home() {
     return resArr;
   }
 
-  const dataInsertionMerge = {
+  const dataRodCut = {
     labels: tamanhoVetor,
     datasets: [
       {
-        label: "Insertion Sort",
-        data: tempoInsertion,
+        label: "Rod-Cut recursivo com memoização",
+        data: tempoRodCutMemoization,
         borderColor: "#565969",
         backgroundColor: "#565969",
       },
       {
-        label: "Merge Sort",
-        data: tempoMerge,
+        label: "Rod-Cut iterativo",
+        data: tempoRodCutIterative,
         borderColor: "#5E6BB5",
         backgroundColor: "#5E6BB5",
       },
@@ -120,8 +121,8 @@ export default function Home() {
     let tamVetor = [];
     let mArrays = []; 
     let arrayGeral = [];
-    let tempMerge = []
-    let tempInsertion = []
+    let tempRodCutIterative = []
+    let tempRodCutMemoization = []
     let inicio;
     let final;
 
@@ -146,7 +147,7 @@ export default function Home() {
         insertionSort(arrayGeral[i][j])
       }
       final = performance.now();
-      tempInsertion.push(final-inicio)
+      tempRodCutMemoization.push(final-inicio)
     }
 
     for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
@@ -155,12 +156,11 @@ export default function Home() {
         mergeSortRecursivo(arrayGeral[i][j])
       }
       final = performance.now();
-      tempMerge.push(final-inicio)
+      tempRodCutIterative.push(final-inicio)
     }
 
-    
-    setTempoInsertion(tempInsertion); // Inserindo o tempo do Isertion SORT
-    setTempoMerge(tempMerge); // Inserindo o tempo do Merge SORT
+    setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
+    setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Merge SORT
     setTamanhoVetor(tamVetor); // Inserindo o tamanho do Vetor
   }
 
@@ -173,7 +173,7 @@ export default function Home() {
         >
           Gerar Gráfico
         </button>
-        <h1>Insertion Sort vs Merge Sort</h1>
+        <h1>Rod-Cut recursivo com memoização x Rod-Cut iterativo</h1>
         <div
           style={{
             marginTop: "50px",
@@ -185,7 +185,7 @@ export default function Home() {
           }}
         >
           <Line
-            data={dataInsertionMerge}
+            data={dataRodCut}
             options={{
               maintainAspectRatio: false,
               scales: {},
