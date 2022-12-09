@@ -30,14 +30,32 @@ export default function Home() {
   function compararNumeros(a, b) {
     return a - b;
   }
-  
-//trocar pelas funções
 
-//rod cut aqui
+  //trocar pelas funções
 
-//
+  //rod cut aqui
+  function memoRodCut(preco, index, n, dp) {
+    if (index == 0) {
+      return n * preco[0];
+    }
+    if (dp[index][n] != -1) {
+      return dp[index][n];
+    }
 
-  
+    notCut = memoRodCut(preco, index - 1, n, dp);
+    rod_length = index + 1;
+
+    if (rod_length <= n) {
+      cut = preco[index]
+        + memoRodCut(preco, index, n - rod_length,
+          dp);
+    }
+
+    return dp[index][n] = Math.max(cut, notCut);
+  }
+  //
+
+
   // função que recebe um valor N que é uma posição do array de tamanhos e retorna um array de valores
   function GerarValores(tamVetor) {
     let valVetor = [];
@@ -70,27 +88,27 @@ export default function Home() {
 
     console.log(tamVetor)
     console.log(arrayGeral)
-    
-  //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
-  //     inicio = performance.now();
-  //     for (let j = 0; j < valorM; j++) {
-  //       insertionSort(arrayGeral[i][j])
-  //     }
-  //     final = performance.now();
-  //     tempRodCutMemoization.push(final-inicio)
-  //   }
 
-  //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
-  //     inicio = performance.now();
-  //     for (let j = 0; j < valorM; j++) {
-  //       mergeSortRecursivo(arrayGeral[i][j])
-  //     }
-  //     final = performance.now();
-  //     tempRodCutIterative.push(final-inicio)
-  //   }
+    //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
+    //     inicio = performance.now();
+    //     for (let j = 0; j < valorM; j++) {
+    //       insertionSort(arrayGeral[i][j])
+    //     }
+    //     final = performance.now();
+    //     tempRodCutMemoization.push(final-inicio)
+    //   }
 
-  //   setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
-  //   setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Merge SORT
+    //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
+    //     inicio = performance.now();
+    //     for (let j = 0; j < valorM; j++) {
+    //       mergeSortRecursivo(arrayGeral[i][j])
+    //     }
+    //     final = performance.now();
+    //     tempRodCutIterative.push(final-inicio)
+    //   }
+
+    //   setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
+    //   setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Merge SORT
     setTamanhoVetor(tamVetor); // Inserindo o tamanho do Vetor
   }
 
@@ -111,7 +129,7 @@ export default function Home() {
       },
     ],
   };
-  
+
   return (
     <>
       <div style={{ alignItems: "center" }}>
