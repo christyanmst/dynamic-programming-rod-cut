@@ -53,6 +53,38 @@ export default function Home() {
 
     return dp[index][n] = Math.max(cut, notCut);
   }
+
+  function iterativeRodCut(n, preco){
+    let table =  Object.keys(new Array(n).fill(null)).map(Number)
+    let cuts =  Object.keys(new Array(n).fill(null)).map(Number)
+    let tmp;
+    console.log(table)
+    console.log(cuts)
+    console.log(preco)
+    for (let length = 1; length < n; length++) {
+      for (let i = 1; i < length; i++) {
+        tmp = preco[i] + table[length-i]
+        if (tmp > table[length]) {
+          table[length] = tmp
+          cuts[length] = i
+        }
+      }
+    }
+    console.log("table aqui", table)
+    console.log("answ", cuts)
+    console.log(cuts[n-1])
+    let AnswerSet = new Set()
+    while ( n > 0) {
+
+      AnswerSet.add(cuts[n-1])
+      console.log(n)
+
+      n -= cuts[n-1]
+      console.log(n)
+    }
+    console.log("Answer set aqui" , AnswerSet)
+    // return AnswerSet;
+  }
   //
 
 
@@ -88,6 +120,8 @@ export default function Home() {
 
     console.log(tamVetor)
     console.log(arrayGeral)
+
+    iterativeRodCut(tamVetor[0], arrayGeral[0])
 
     //   for (let i = 0; i < arrayGeral.length; i++) { // um FOR que vai verificar o tempo de performance em M vetores de tamanho N
     //     inicio = performance.now();
