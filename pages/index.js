@@ -52,35 +52,40 @@ export default function Home() {
     return (dp[index][n] = Math.max(cut, notCut));
   }
 
-  function iterativeRodCut(n, preco) {
-    let table = Object.keys(new Array(n + 1).fill(null)).map(Number);
-    let cuts = Object.keys(new Array(n + 1).fill(null)).map(Number);
-    let tmp;
-    
-    for (let length = 1; length <= n; length++) {
-      for (let i = 1; i <= length; i++) {
-        tmp = preco[i] + table[length - i];
-        if (tmp > table[length]) {
-          table[length] = tmp;
-          cuts[length] = i;
+  function iterativeRodCut(prices, n) {
+    let dp = new Array(n + 1).fill(0);
+    let cuts = new Array(n + 1).fill(0);
+
+  
+    for (let i = 1; i <= n; i++) {
+      let maxValue = Number.MIN_SAFE_INTEGER;
+  
+      for (let j = 0; j < i; j++) {
+        let value = prices[j] + dp[i - j - 1];
+        if (value > maxValue) {
+          maxValue = value;
+          cuts[i] = j + 1;
         }
       }
+  
+      dp[i] = maxValue;
     }
-
-    let AnswerSet = new Set();
-    while (n > 0) {
-      AnswerSet.add(cuts[n]);
-      n -= cuts[n];
+  
+    // dp[n] custo da solução ótima
+    // cuts[n] solução ótima.
+  
+    return {
+      tam: n,
+      cost: dp[n],
+      cuts: cuts[n]
     }
-    return AnswerSet;
   }
-  //
 
   // função que recebe um valor N que é uma posição do array de tamanhos e retorna um array de valores
-  function GerarValores(tamVetor) {
+  function GerarValores() {
     let valVetor = [];
-    for (let j = 0; j < tamVetor; j++) {
-      valVetor.push(Math.floor(Math.random() * (30 - 1) + 1));
+    for (let j = 0; j < 10; j++) {
+      valVetor.push(Math.floor(Math.random() * (20 - 1) + 1));
     }
     valVetor.sort(compararNumeros);
     return valVetor; //retorna um vetor de tamanho N com N números aleatórios
@@ -88,20 +93,17 @@ export default function Home() {
 
   function sortTime() {
     let tamVetor = [];
-    let arrayGeral = [];
     let tempRodCutIterative = [];
     let tempRodCutMemoization = [];
     let inicio;
     let final;
+    let prices = GerarValores();
 
     for (let i = 0; i < 10; i++) {
-      tamVetor.push(Math.floor(Math.random() * (30 - 5) + 5)); // gerando valores entre 5 e 30, tamanho de vetores
+      tamVetor.push(Math.floor(Math.random() * (50 - 5) + 5)); // gerando valores entre 5 e 30, tamanho de entrada
     }
     tamVetor.sort(compararNumeros); // ordenando array de tamanhos
 
-    for (let i = 0; i < tamVetor.length; i++) {
-      arrayGeral.push(GerarValores(tamVetor[i])); // gerando valores pro tamanho especifico do array de tamanhos
-    }
 
     // for (let i = 0; i < arrayGeral.length; i++) { // verificando tempo de performance para o rod cut memoization
     //   inicio = performance.now();
@@ -110,9 +112,9 @@ export default function Home() {
     //   tempRodCutMemoization.push(final - inicio);
     // }
 
-    for (let i = 0; i < arrayGeral.length; i++) { // verificando tempo de performance para o rod cut iterative
+    for (let i = 0; i < tamVetor.length; i++) { // verificando tempo de performance para o rod cut iterative
       inicio = performance.now();
-      iterativeRodCut(tamVetor[i], arrayGeral[i]);
+      console.log(iterativeRodCut(prices , tamVetor[i]));
       final = performance.now();
       tempRodCutIterative.push(final - inicio);
     }
