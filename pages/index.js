@@ -81,6 +81,36 @@ export default function Home() {
     }
   }
 
+  function memoRodCut(p, n) {
+    // Criar um vetor de memória para armazenar resultados intermediários
+    let r = new Array(n + 1);
+    for (let i = 0; i <= n; i++) {
+      r[i] = -1;
+    }
+  
+    // Função auxiliar recursive para calcular a solução ótima
+    function rodCutAux(p, n, r) {
+      if (r[n] >= 0) {
+        return r[n];
+      }
+  
+      let q;
+      if (n === 0) {
+        q = 0;
+      } else {
+        q = Number.MIN_SAFE_INTEGER;
+        for (let i = 1; i <= n; i++) {
+          q = Math.max(q, p[i] + rodCutAux(p, n - i, r));
+        }
+      }
+  
+      r[n] = q;
+      return q;
+    }
+  
+    // Chamar a função auxiliar e retornar o resultado
+    return rodCutAux(p, n, r);
+  }
 
   // função que recebe um valor N que é uma posição do array de tamanhos e retorna um array de valores
   function GerarValores() {
@@ -106,12 +136,12 @@ export default function Home() {
     tamVetor.sort(compararNumeros); // ordenando array de tamanhos
 
 
-    // for (let i = 0; i < tamVetor.length; i++) { // verificando tempo de performance para o rod cut iterative
-    //   inicio = performance.now();
-    //   console.log(rodCutMemoization(prices , tamVetor[i]));
-    //   final = performance.now();
-    //   tempRodCutMemoization.push(final - inicio);
-    // }
+    for (let i = 0; i < tamVetor.length; i++) { // verificando tempo de performance para o rod cut iterative
+      inicio = performance.now();
+      console.log(memoRodCut(prices , tamVetor[i]));
+      final = performance.now();
+      tempRodCutMemoization.push(final - inicio);
+    }
 
     for (let i = 0; i < tamVetor.length; i++) { // verificando tempo de performance para o rod cut iterative
       inicio = performance.now();
@@ -120,7 +150,7 @@ export default function Home() {
       tempRodCutIterative.push(final - inicio);
     }
 
-    // setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
+    setTempoRodCutMemoization(tempRodCutMemoization); // Inserindo o tempo do Isertion SORT
     setTempoRodCutIterative(tempRodCutIterative); // Inserindo o tempo do Rod Cut Iterative
     setTamanhoVetor(tamVetor); // Inserindo o tamanho do Vetor
   }
