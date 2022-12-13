@@ -81,6 +81,7 @@ export default function Home() {
     }
   }
 
+
   // função que recebe um valor N que é uma posição do array de tamanhos e retorna um array de valores
   function GerarValores() {
     let valVetor = [];
@@ -99,15 +100,15 @@ export default function Home() {
     let final;
     let prices = GerarValores();
 
-    for (let i = 0; i < 10; i++) {
-      tamVetor.push(Math.floor(Math.random() * (50 - 5) + 5)); // gerando valores entre 5 e 30, tamanho de entrada
+    for (let i = 1; i <= 10; i++) {
+      tamVetor.push(i); // gerando valores entre 1 e 15, tamanhos
     }
     tamVetor.sort(compararNumeros); // ordenando array de tamanhos
 
 
-    // for (let i = 0; i < arrayGeral.length; i++) { // verificando tempo de performance para o rod cut memoization
+    // for (let i = 0; i < tamVetor.length; i++) { // verificando tempo de performance para o rod cut iterative
     //   inicio = performance.now();
-    //   memoRodCut...
+    //   console.log(rodCutMemoization(prices , tamVetor[i]));
     //   final = performance.now();
     //   tempRodCutMemoization.push(final - inicio);
     // }
